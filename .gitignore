@@ -1,0 +1,19 @@
+.DS_Store
+
+# Secrets: only the .env.example templates are committed.
+.env
+.env.*
+!.env.example
+
+# Build output and dependencies
+api/target/
+web/node_modules/
+web/.next/
+web/out/
+web/.vercel
+web/*.tsbuildinfo
+web/next-env.d.ts
+
+# Internal brand material: kept out of the public repo.
+Haseki Brand Strategy.docx
+WhatsApp Image *.jpeg
