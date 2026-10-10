@@ -5,6 +5,7 @@ import { CartProvider } from "@/components/commerce/cart-context";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { ShippingBar } from "@/components/layout/shipping-bar";
+import { SmoothScroll } from "@/components/layout/smooth-scroll";
 import { Toaster } from "@/components/ui/sonner";
 import { currencyBootScript } from "@/lib/currency";
 import { site } from "@/lib/site";
@@ -58,6 +59,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <CartDrawer />
         </CartProvider>
         <Toaster theme="light" position="top-center" />
+        <SmoothScroll />
       </body>
     </html>
   );

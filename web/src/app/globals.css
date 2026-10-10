@@ -226,3 +226,18 @@ html[data-currency="AED"] [data-cur="AED"] {
 .prose-haseki th {
   @apply font-medium text-foreground;
 }
+
+/* Lenis smooth scroll (desktop only, see components/layout/smooth-scroll.tsx). */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+.lenis [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
