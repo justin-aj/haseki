@@ -54,14 +54,20 @@ impl Config {
         };
         let site_url = opt("SITE_URL").unwrap_or_else(|| "http://localhost:3000".into());
         let secure_cookies = opt("SECURE_COOKIES").is_some_and(|v| v == "true");
-        if mode == PaymentsMode::Mock && (secure_cookies || site_url.starts_with("https://")) {
+        // Mock payments mark orders paid without charging anyone. Refuse them on a public
+        // (https) deployment unless it is explicitly a client preview.
+        let preview = opt("ALLOW_MOCK_PAYMENTS_ON_HTTPS").is_some_and(|v| v == "true");
+        if mode == PaymentsMode::Mock && (secure_cookies || site_url.starts_with("https://")) && !preview {
             anyhow::bail!(
-                "PAYMENTS_MODE=mock is for local development only; refusing to start with an https SITE_URL or SECURE_COOKIES=true"
+                "PAYMENTS_MODE=mock is for local development only; refusing to start with an https SITE_URL or SECURE_COOKIES=true (set ALLOW_MOCK_PAYMENTS_ON_HTTPS=true for a preview deployment)"
             );
         }
         Ok(Self {
             database_url: std::env::var("DATABASE_URL").context("DATABASE_URL must be set")?,
-            bind_addr: opt("BIND_ADDR").unwrap_or_else(|| "127.0.0.1:8080".into()),
+            // Hosts like Heroku assign PORT and need a public bind.
+            bind_addr: opt("BIND_ADDR")
+                .or_else(|| opt("PORT").map(|port| format!("0.0.0.0:{port}")))
+                .unwrap_or_else(|| "127.0.0.1:8080".into()),
             site_url,
             secure_cookies,
             payments: PaymentsConfig {
