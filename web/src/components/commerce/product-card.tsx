@@ -36,7 +36,8 @@ export function ProductCard({
   );
 
   return (
-    <Link href={`/shop/${product.slug}`} className={cn("group block", className)}>
+    // prefetch: resolve the (cached) product content ahead of the click so the image morph has a target.
+    <Link href={`/shop/${product.slug}`} prefetch className={cn("group block", className)}>
       <div className="relative aspect-[3/4] overflow-hidden rounded-sm bg-muted">
         {morph ? (
           <ViewTransition name={productImageTransition(product.slug)} share="morph" default="none">

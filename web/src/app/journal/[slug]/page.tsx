@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -23,7 +24,7 @@ export async function generateMetadata({ params }: PageProps<"/journal/[slug]">)
   };
 }
 
-export default async function JournalPostPage({ params }: PageProps<"/journal/[slug]">) {
+async function JournalPostPageContent({ params }: Pick<PageProps<"/journal/[slug]">, "params">) {
   const { slug } = await params;
   const post = await getJournalPost(slug);
   if (!post) notFound();
@@ -56,5 +57,13 @@ export default async function JournalPostPage({ params }: PageProps<"/journal/[s
         </div>
       </Container>
     </article>
+  );
+}
+
+export default function JournalPostPage({ params }: PageProps<"/journal/[slug]">) {
+  return (
+    <Suspense fallback={<div className="mx-auto h-[70svh] max-w-3xl animate-pulse px-4 pt-16" />}>
+      <JournalPostPageContent params={params} />
+    </Suspense>
   );
 }

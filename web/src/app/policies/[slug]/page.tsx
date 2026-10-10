@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/content/section";
@@ -18,7 +19,7 @@ export async function generateMetadata({ params }: PageProps<"/policies/[slug]">
   return policy ? { title: policy.title } : {};
 }
 
-export default async function PolicyPage({ params }: PageProps<"/policies/[slug]">) {
+async function PolicyPageContent({ params }: Pick<PageProps<"/policies/[slug]">, "params">) {
   const { slug } = await params;
   const [policy, all] = await Promise.all([getPolicy(slug), getPolicies()]);
   if (!policy) notFound();
@@ -49,5 +50,13 @@ export default async function PolicyPage({ params }: PageProps<"/policies/[slug]
         <div className="prose-haseki mt-8" dangerouslySetInnerHTML={{ __html: renderMarkdown(policy.body_md) }} />
       </article>
     </Container>
+  );
+}
+
+export default function PolicyPage({ params }: PageProps<"/policies/[slug]">) {
+  return (
+    <Suspense fallback={<div className="mx-auto h-[70svh] max-w-3xl animate-pulse px-4 pt-16" />}>
+      <PolicyPageContent params={params} />
+    </Suspense>
   );
 }
