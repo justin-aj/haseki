@@ -3,6 +3,8 @@ import sys
 
 U = "https://images.unsplash.com/photo-{}?w=1200&h=1600&fit=crop&crop=entropy&q=80"
 UL = "https://images.unsplash.com/photo-{}?w=1600&h=1067&fit=crop&crop=entropy&q=80"
+# Full-bleed home hero: needs a landscape original, or the crop zooms into a face.
+HERO = "https://images.unsplash.com/photo-{}?w=2400&h=1350&fit=crop&crop=entropy&q=80"
 IMG = {
     "A": ("1587538018365-2a1f8b544c08", "Woman in a red and white floral dress"),
     "B": ("1671881641527-0a1ee842e13e", "Woman in a red and gold sari"),
@@ -73,7 +75,7 @@ TIERS = {
 DROPS = [
     ("the-scallop-study", 1, "The Scallop Study", "Soft edges, sharp lines.",
      "Our first drop starts with a single detail: the scallop. Worked into chiffon blouses, a sleeve top, a midi, a cropped jacket and two easy bottoms, it is the curve that softens a clean cut without ever turning it sweet.",
-     url("F"), "2026-10-01"),
+     HERO.format(IMG["Q"][0]), "2026-10-01"),
     ("the-stone-garden", 2, "The Stone Garden", "Printed georgettes, tiny stone interventions.",
      "Original botanical prints on fluid georgette, with small stones set where the light lands. The kind of detail you notice the second time you look.",
      url("U"), "2026-12-01"),
